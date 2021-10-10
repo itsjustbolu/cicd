@@ -110,7 +110,14 @@
             "metadata": {
                 "description": "Specifies the name of the private endpoint to the storage account used for boot diagnostic logs of the virtual machine."
             }
-        }
+        },
+        "vmDiagnosticStorageAccountName": {
+            "defaultValue": "vmDiagnosticStorageAccount",
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the name of the storage account used for boot diagnostic logs of the virtual machine."
+            }
+        }       
     },
     "variables": {
         "vmDiagnosticStorageAccountPrivateEndpointId": "[resourceId('Microsoft.Network/privateEndpoints', parameters('vmDiagnosticStorageAccountPrivateEndpointName'))]",
@@ -146,7 +153,7 @@
                         "version": "latest"
                     },
                     "osDisk": {
-                        "name": "[concat(parameters('vmName1'),'OSDisk')]",
+                        "name": "[concat(parameters('vmName'),'OSDisk')]",
                         "caching": "ReadWrite",
                         "createOption": "FromImage",
                         "diskSizeGB": "[parameters('osDiskSize')]",
@@ -188,5 +195,29 @@
         }
     ],
     "outputs": {
+        "vmName": {
+            "type": "string",
+            "value": "[parameters('vmName')]"
+        },
+        "adminUsername": {
+            "type": "string",
+            "value": "[parameters('adminUsername')]"
+        },
+        "vmDiagnosticStorageAccountPrivateEndpointId": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', variables('vmDiagnosticStorageAccountPrivateEndpointId')))]"
+        },
+        "vmDiagnosticStorageAccountId": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.Storage/StorageAccounts', variables('vmDiagnosticStorageAccountId')))]"
+        },
+        "vmNicId": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.Network/networkInterfaces',variables('vmNicId')))]"
+        },
+        "storageInfo": {
+            "type": "string",
+            "value": "[concat('Storage_Type=', parameters('diskStorageAccounType'), 'Num_of_Data_Disks=', parameters('numDataDisks'), 'OS_Disk_Size=', parameters('osDiskSize'), 'Data_Disk_Size=', parameters('dataDiskSize'))]"
+        }
     }
 }
