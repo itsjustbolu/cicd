@@ -214,6 +214,10 @@
         "vmNicId": {
             "type": "string",
             "value": "[reference(resourceId('Microsoft.Network/networkInterfaces',variables('vmNicId')))]"
+        },
+        "storageInfo": {
+            "type": "string",
+            "value": "[concat('Storage_Type=', parameters('diskStorageAccounType'), 'Num_of_Data_Disks=', parameters('numDataDisks'), 'OS_Disk_Size=', parameters('osDiskSize'), 'Data_Disk_Size=', parameters('dataDiskSize'))]"
         }
     }
 }
